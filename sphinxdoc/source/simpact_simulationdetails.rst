@@ -65,6 +65,13 @@ will be scheduled. The rationale is that when a person drops out, he may do so b
 he's feeling better thanks to the treatment. After dropping out, the condition will
 worsen again, causing him to go to a doctor, get re-diagnosed and start treatment again.
 
+To get the HSV2 (resp. HCV) epidemic started, an :ref:`HSV2 seeding event <hsv2seeding>` 
+(resp. :ref:`HCV seeding event <hcvseeding>`) can be scheduled. When this event is triggered, a number of
+people in the existing population will be marked as being HSV2- (resp. HCV-) infected. In case one of the
+partners in the relationship is HSV2 (resp. HCV) infected, transmission of the virus may occur. If so, a 
+:ref:`HSV2 transmission event <hsv2transmission>` (resp. :ref:`HCV transmission event <hcvtransmission>`)
+will fire.
+
 Initialization of the simulation
 --------------------------------
 
@@ -85,6 +92,8 @@ During the initialization of the simulated population, the following steps will 
     - For each person, a 'normal' :ref:`mortality event <mortality>` will be scheduled, and if needed,
       a :ref:`debut event <debut>` will be scheduled.
     - Get the HIV epidemic started at some point, by scheduling an :ref:`HIV seeding event <hivseeding>`.
+    - Get the HSV2 epidemic started at some point, by scheduling an :ref:`HSV2 seeding event <hsv2seeding>`.
+    - Get the HCV epidemic started at some point, by scheduling an :ref:`HCV seeding event <hcvseeding>`.
     - If specified, schedule the next :ref:`simulation intervention <simulationintervention>`. This is a
       general way of changing simulation settings during the simulation.
     - Schedule a :ref:`periodic logging event <periodiclogging>` if requested. This will log some 
@@ -351,30 +360,68 @@ parentheses), and their meaning:
 
 .. _personhsv2opts:
 
-HIV and HSV2 related settings
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+HIV, HSV2 and HCV related settings
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-For the :ref:`HIV transmission <transmission>` hazard, person-dependent values for susceptibility for both infections and susceptibility for HIV only can be set. These values will be drawn from the distributions specified by ``person.hiv.b0.dist.type`` and ``person.hiv.b1.dist.type`` respectively, and their corresponding parameters.
+For the :ref:`HIV transmission <transmission>` hazard, person-dependent values for susceptibility 
+for HIV-HSV2 co-infection and susceptibility for HIV only can be set. These values will be drawn from the 
+distributions specified by ``person.hiv.b0.dist.type`` and ``person.hiv.b1.dist.type`` respectively, 
+and their corresponding parameters. A value for susceptibility for HIV-HCV co-infection can be drawn from
+a distribution specified by ``person.hiv.b3.dist.type``.
 
 For the :ref:`HSV2 transmission <hsv2transmission>` hazard, a person-dependent baseline
 value can be set. This value will be drawn from the distribution specified
-by ``person.hsv2.a.dist.type`` and its corresponding parameters. Furthermore, a person-dependent value for susceptibility for HSV2 only can be set. This value will be drawn from a distribution specified by ``person.hsv2.b2.dist.type`` and its corresponding parameters. Furthermore, the value for susceptibility for both infections, drawn from the distribution specified by ``person.hiv.b0.dist.type`` will also be included in the :ref:`HSV2 transmission <hsv2transmission>` hazard.
+by ``person.hsv2.a.dist.type`` and its corresponding parameters. Furthermore, a person-dependent value for 
+susceptibility for HSV2 only can be set. This value will be drawn from a distribution specified by 
+``person.hsv2.b2.dist.type`` and its corresponding parameters. Furthermore, the value for susceptibility for 
+both infections, drawn from the distribution specified by ``person.hiv.b0.dist.type`` will also be included 
+in the :ref:`HSV2 transmission <hsv2transmission>` hazard.
+
+For the :ref:`HCV transmission <hcvtransmission>` hazard, a person-dependent baseline
+value can be set. This value will be drawn from the distribution specified
+by ``person.hcv.a.dist.type`` and its corresponding parameters. Furthermore, a person-dependent value for
+susceptibility for HCV only can be set. This value will be drawn from a distribution specified by 
+``person.hcv.b4.dist.type`` and its corresponding parameters. Furthermore, the value for susceptibility for 
+both infections, drawn from the distribution specified by ``person.hiv.b3.dist.type`` will also be included
+in the :ref:`HCV transmission <hcvtransmission>` hazard. 
 
 Here is an overview of the relevant configuration options, their defaults (between
 parentheses), and their meaning:
 
  - ``person.hiv.b0.dist.type`` ('fixed' with value 0): |br|
-   Specifies the :ref:`one dimensional distribution <prob1d>` that is used to draw the person dependent value for susceptibility for both infections from the :ref:`HIV transmission <transmission>` and the :ref:`HSV2 transmission <hsv2transmission>` hazards.
+   Specifies the :ref:`one dimensional distribution <prob1d>` that is used to draw the person dependent value 
+   for susceptibility for HIV-HSV2 co-infection from the :ref:`HIV transmission <transmission>` and the 
+   :ref:`HSV2 transmission <hsv2transmission>` hazards.
  - ``person.hiv.b1.dist.type`` ('fixed' with value 0): |br|
-   Specifies the :ref:`one dimensional distribution <prob1d>` that is used to draw the person dependent value for susceptibility for HIV only from the :ref:`HIV transmission <transmission>` hazard.
+   Specifies the :ref:`one dimensional distribution <prob1d>` that is used to draw the person dependent value 
+   for susceptibility for HIV only from the :ref:`HIV transmission <transmission>` hazard.
+ - ``person.hiv.b3.dist.type`` ('fixed' with value 0): |br|
+   Specifies the :ref:`one dimensional distribution <prob1d>` that is used to draw the person dependent value 
+   for susceptibility for HIV-HCV co-infection from the :ref:`HIV transmission <transmission>` and the 
+   :ref:`HCV transmission <hcvtransmission>` hazards.
  - ``person.hsv2.a.dist.type`` ('fixed' with value 0): |br|
    Specifies the :ref:`one dimensional distribution <prob1d>` that is used to draw
    the person dependent baseline value from for the :ref:`HSV2 transmission <hsv2transmission>`
    hazard.
  - ``person.hsv2.b2.dist.type`` ('fixed' with value 0): |br|
-   Specifies the :ref:`one dimensional distribution <prob1d>` that is used to draw the person dependent value for susceptibility for HSV2 only for the :ref:`HSV2 transmission <hsv2transmission>` hazard.
+   Specifies the :ref:`one dimensional distribution <prob1d>` that is used to draw the person dependent value 
+   for susceptibility for HSV2 only for the :ref:`HSV2 transmission <hsv2transmission>` hazard.
+ - ``person.hcv.a.dist.type`` ('fixed' with value 0): |br|
+   Specifies the :ref:`one dimensional distribution <prob1d>` that is used to draw
+   the person dependent baseline value from for the :ref:`HCV transmission <hcvtransmission>`
+   hazard.
+ - ``person.hcv.b4.dist.type`` ('fixed' with value 0): |br|
+   Specifies the :ref:`one dimensional distribution <prob1d>` that is used to draw the person dependent value 
+   for susceptibility for HCV only for the :ref:`HCV transmission <hcvtransmission>` hazard.
 
-If you want to include the influence of susceptibility in your simulations, appropriate distributions for :math:`b_{\rm 0}`, :math:`b_{\rm 1}` and :math:`b_{\rm 2}` are normal distributions, so that the expected values of :math:`\exp(b_{\rm 0}+b_{\rm 1})` and :math:`\exp(b_{\rm 0}+b_{\rm 2})` are both equal to 1. For :math:`b_{\rm i} \sim\ N\left(\mu_{i},\sigma^{2}_{i}\right)`, normal probability distributions with :math:`\mu_{i}= - \sigma^{2}_{i}/2` (:math:`i=0,1,2`) fulfill these condions. For more information, see `probability_distributions.pdf <_static/probability_distributions.pdf>`_.
+If you want to include the influence of susceptibility in your simulations for HIV-HSV2 (resp. HIV-HCV) co-infection, 
+appropriate distributions for :math:`b_{\rm 0}`, :math:`b_{\rm 1}` and :math:`b_{\rm 2}` 
+(resp. :math:`b_{\rm 3}`, :math:`b_{\rm 1}` and :math:`b_{\rm 4}`)  are normal distributions, so that the 
+expected values of :math:`\exp(b_{\rm 0}+b_{\rm 1})` and :math:`\exp(b_{\rm 0}+b_{\rm 2})` (resp. 
+:math:`\exp(b_{\rm 3}+b_{\rm 1})` and :math:`\exp(b_{\rm 3}+b_{\rm 4})`) are both equal to 1. 
+For :math:`b_{\rm i} \sim\ N\left(\mu_{i},\sigma^{2}_{i}\right)`, normal probability distributions with 
+:math:`\mu_{i}= - \sigma^{2}_{i}/2` (:math:`i=0,1,2,3,4`) fulfill these condions. For more information, see 
+`probability_distributions.pdf <_static/probability_distributions.pdf>`_.
 
 Relationship related settings
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -1795,6 +1842,8 @@ parentheses), and their meaning:
    program will terminate if this is set to ``yes``. It will continue despite not
    having the requested amount of seeders if set to ``no``.
 
+.. _hsv2seeding:
+
 HSV2 seeding event
 ^^^^^^^^^^^^^^^^^^
 
@@ -1838,6 +1887,56 @@ parentheses), and their meaning:
    If ``hsv2seed.type`` is ``amount``, this number of people will be chosen from the
    group of possible seeders and marked as being HSV2 infected.
  - ``hsv2seed.stop.short`` ('yes'): |br|
+   In case a specific amount of seeders should be chosen but this amount is
+   not available (e.g. due to a too restrictive allowed age range), the
+   program will terminate if this is set to ``yes``. It will continue despite not
+   having the requested amount of seeders if set to ``no``.
+
+.. _hcvseeding:
+
+HCV seeding event
+^^^^^^^^^^^^^^^^^^
+
+When introducing the initial population in the simulation, the persons are not
+infected with HCV. To start such an infection, an HCV seeding event is scheduled,
+and when (controlled by ``hcvseed.time``) this is triggered, a certain amount of
+people will be marked as HCV infected. They can then pass on their infection
+status through the :ref:`HCV transmission event <hcvtransmission>`.
+
+If the event fires, only the people that
+have the right age (as specified by ``hcvseed.age.min`` and ``hcvseed.age.max``)
+and right gender (as specified by ``hcvseed.gender``)
+will be possible 'seeders', and depending on the setting of ``hcvseed.type``
+either a fixed number of people will be used, or each person will have a
+certain probability of being a seeder. In case a fixed number is requested
+but this number cannot be reached in the current simulation, the program
+can be instructed to terminate depending on the ``hcvseed.stop.short`` setting.
+
+Here is an overview of the relevant configuration options, their defaults (between
+parentheses), and their meaning:
+
+ - ``hcvseed.time`` (-1): |br|
+   This specifies the time at which the seeding event takes place; default is 
+   that HCV seeding is disabled.
+ - ``hcvseed.type`` ('fraction'): |br|
+   This value specifies how the seeding will occur, either ``fraction`` to specify
+   that each person in the possible seeders group will have a certain probability of
+   being a seeder, or ``amount`` to specify that a fixed number of seeders should be
+   chosen.
+ - ``hcvseed.age.min`` (0): |br|
+   People who are possible seeders must be at least this old.
+ - ``hcvseed.age.max`` (1000): |br|
+   People who are possible seeders must be at most this old.
+ - ``hcvseed.gender`` ('any'): |br|
+   People who are possible seeders must have this gender. Can be either ``any`` (the
+   default), ``male`` or ``female``.
+ - ``hcvseed.fraction`` (0.2): |br|
+   This is only used if ``hcvseed.type`` is set to ``fraction``, and specifies the
+   probability each possible seeder has of actually becoming HCV infected.
+ - ``hcvseed.amount`` (1): |br|
+   If ``hcvseed.type`` is ``amount``, this number of people will be chosen from the
+   group of possible seeders and marked as being HCV infected.
+ - ``hcvseed.stop.short`` ('yes'): |br|
    In case a specific amount of seeders should be chosen but this amount is
    not available (e.g. due to a too restrictive allowed age range), the
    program will terminate if this is set to ``yes``. It will continue despite not
@@ -2228,8 +2327,8 @@ The hazard for this event is the following:
 	
 	\begin{eqnarray}    
 	{\rm hazard} & = & \exp\left(a + b V^{-c} + d_1 P_{\rm infected} + d_2 P_{\rm uninfected} \right.\\
-                  & + & {\rm W} f_1 \exp( f_2 (A_{\rm woman}(t_{\rm ry}) - A_{\rm debut} ) )\\
-			  & + & \left. e_1 HSV2_{\rm infected} + e_2 HSV2_{\rm uninfected} + g_1 b_{\rm 0j} + g_2 b_{\rm 1j} \right)
+                  & + & {\rm W} f_1 \exp( f_2 (A_{\rm woman}(t_{\rm ry}) - A_{\rm debut} ) ) + e_1 HSV2_{\rm infected}\\
+			  & + & \left. e_2 HSV2_{\rm uninfected} + e_3 HCV_{\rm infected} + g_1 b_{\rm 0j} + g_2 b_{\rm 1j} + g_3 b_{\rm 3j} \right)
 	\end{eqnarray}
 
 In this hazard, the value of
@@ -2242,8 +2341,20 @@ person is a woman, and 0 otherwise. By configuring the weights :math:`f_1` and :
 is becomes possible to change the susceptibility of a woman depending on her
 age. Note that this age is only specified approximately by using a reference
 time :math:`t_{\rm ry}` instead of the actual time :math:`t`. This reference time can be
-updated using the :ref:`reference year synchronization event <syncrefyear>`. :math:`{HSV2}_{\rm infected}` and :math:`{HSV2}_{\rm uninfected}` specify if the HIV-infected resp. uninfected person is infected with HSV2. The value of :math:`{HSV2}_{\rm infected}` resp. :math:`{HSV2}_{\rm uninfected}`  is 1 if the HIV-infected resp. uninfected person is infected with HSV2, and 0 otherwise. The values of :math:`b_{\rm 0j}` and :math:`b_{\rm 1j}` specify the susceptibility of the uninfected person to both diseases and HIV only respectively. Their values can be set using ``person.hiv.b0.dist.type`` resp. ``person.hiv.b1.dist.type`` from the :ref:`HIV related person settings <personhsv2opts>`.
-The values :math:`a`, :math:`b`, :math:`c`, :math:`d_1`, :math:`d_2`, :math:`e_1`, :math:`e_2`, :math:`f_1`, :math:`f_2`, :math:`g_1` and :math:`g_2` can be configured as specified below;
+updated using the :ref:`reference year synchronization event <syncrefyear>`. 
+:math:`{HSV2}_{\rm infected}` and :math:`{HSV2}_{\rm uninfected}` specify if the HIV-infected resp. 
+uninfected person is infected with HSV2. The value of :math:`{HSV2}_{\rm infected}` resp. 
+:math:`{HSV2}_{\rm uninfected}`  is 1 if the HIV-infected resp. uninfected person is infected with HSV2, 
+and 0 otherwise. The value of :math:`{HCV}_{\rm infected}` specifies if the HIV-infected person is
+infected with HCV. The value of :math:`{HCV}_{\rm infected}` is 1 if the HIV-infected person is
+infected with HCV, and 0 otherwise.
+The values of :math:`b_{\rm 0j}` and :math:`b_{\rm 1j}` specify the susceptibility of the uninfected person to 
+HIV-HSV2 co-infection and HIV only respectively. Their values can be set using ``person.hiv.b0.dist.type`` resp. 
+``person.hiv.b1.dist.type`` from the :ref:`HIV related person settings <personhsv2opts>`.
+The value of :math:`b_{\rm 3j}` specifies the susceptibility of the uninfected person to HIV-HCV co-infection. Its
+value can be set using ``person.hiv.b3.dist.type`` from the :ref:`HIV related person settings <personhsv2opts>`.
+The values :math:`a`, :math:`b`, :math:`c`, :math:`d_1`, :math:`d_2`, :math:`e_1`, :math:`e_2`, :math:`e_3`,
+:math:`f_1`, :math:`f_2`, :math:`g_1`, :math:`g_2` and :math:`g_3` can be configured as specified below;
 the :math:`A_{\rm debut}` parameter is the :ref:`debut age <debut>`.
 
 The form of this hazard was originally inspired by the article of :ref:`[Hargrove et al] <ref_hargrove>`.
@@ -2276,14 +2387,18 @@ parentheses), and their meaning:
    This refers to the value of :math:`e_1` in the expression of the hazard and specifies the influence of the HIV-infected person being HSV2-infected.
  - ``hivtransmission.param.e2`` (0): |br|
    This refers to the value of :math:`e_2` in the expression of the hazard and specifies the influence of the HIV-uninfected person being HSV2-infected.
+ - ``hivtransmission.param.e3`` (0): |br|
+   This refers to the value of :math:`e_3` in the expression of the hazard and specifies the influence of the HIV-infected person being HCV-infected.
  - ``hivtransmission.param.f1`` (0): |br|
    This refers to the value of :math:`f_1` in the expression of the hazard.
  - ``hivtransmission.param.f2`` (0): |br|
    This refers to the value of :math:`f_2` in the expression of the hazard.
  - ``hivtransmission.param.g1`` (0): |br|
-   This refers to the value of :math:`g_1` in the expression of the hazard. Set this parameter equal to 1 if you want to include the influence of susceptibility to both infections.
+   This refers to the value of :math:`g_1` in the expression of the hazard. Set this parameter equal to 1 if you want to include the influence of susceptibility to HIV-HSV2 co-infection.
  - ``hivtransmission.param.g2`` (0): |br|
    This refers to the value of :math:`g_2` in the expression of the hazard. Set this parameter equal to 1 if you want to include the influence of susceptibility to HIV only.
+ - ``hivtransmission.param.g3`` (0): |br|
+   This refers to the value of :math:`g_3` in the expression of the hazard. Set this parameter equal to 1 if you want to include the influence of susceptibility to HIV-HCV co-infection.
  - ``hivtransmission.maxageref.diff`` (1): |br|
    As explained above, the hazard does not use the real time dependency :math:`t`, but
    refers to a reference time :math:`t_{\rm ry}` that needs to be synchronized periodically
@@ -2328,6 +2443,53 @@ parentheses), and their meaning:
    constant) to be able to perform the necessary calculations. This configuration
    value is a measure of this threshold.
 
+.. _hcvtransmission:
 
+HCV transmission event
+^^^^^^^^^^^^^^^^^^^^^^
+
+When a person is HCV infected and and a relationship is formed, an HCV transmission
+event will be scheduled. A time dependent exponential hazard is used:
+
+.. math::
+
+	{\rm hazard} = \exp(a_i+b(t-t_{\rm HCV-infected})+c_1 H_{\rm i} + c_2 H_{\rm j} + d M_{\rm i} + e_1 b_{\rm 3j} + e_2 b_{\rm 4j})
+
+The value of :math:`a_i` can be set using ``person.hcv.a.dist.type`` from the
+:ref:`HCV related person settings <personhsv2opts>`. This value is taken from
+the person that's already infected. The :math:`b` value can be configured using
+``hcvtransmission.hazard.b``, and :math:`t_{\rm HCV-infected}` is the time at which
+the infected person acquired the HCV infection. :math:`M_{\rm i}` represents the gender 
+effect and is taken from the person that's already HCV-infected. It's value is 1 for male 
+and 0 for female. The values :math:`H_{\rm i}` and :math:`H_{\rm j}` are indicators for 
+the HCV-infected (resp. HCV-uninfected) person being HIV-infected. Their values are 1 for 
+HIV-infected and 0 for HIV-uninfected. The values of :math:`b_{\rm 3j}` and :math:`b_{\rm 4j}` 
+specify the susceptibility of the uninfected person to both diseases and HCV only respectively. 
+The value of :math:`b_{\rm 3j}` can be set using ``person.hiv.b3.dist.type`` from the 
+:ref:`HIV related person settings <personhsv2opts>`. The value of :math:`b_{\rm 4j}` can be set 
+using ``person.hcv.b4.dist.type`` from the :ref:`HCV related person settings <personhsv2opts>`.
+
+Here is an overview of the relevant configuration options, their defaults (between
+parentheses), and their meaning:
+
+ - ``hcvtransmission.hazard.b`` (0): |br|
+   This configures the value of :math:`b` in the hazard above.
+ - ``hcvtransmission.hazard.c1`` (0): |br|
+   This configures the value of :math:`c1` in the hazard above.
+ - ``hcvtransmission.hazard.c2`` (0): |br|
+   This configures the value of :math:`c2` in the hazard above.
+ - ``hcvtransmission.hazard.d`` (0): |br|
+   This configures the value of d for the gender effect in the hazard above.
+ - ``hcvtransmission.hazard.e1`` (0): |br|
+   This refers to the value of :math:`e_1` in the expression for the hazard. Set this parameter equal 
+   to 1 if you want to include the influence of susceptibility to both infections.
+ - ``hcvtransmission.hazard.e2`` (0): |br|
+   This refers to the value of :math:`e_2` in the expression for the hazard. Set this parameter equal 
+   to 1 if you want to include the influence of susceptibility to HCV only.
+ - ``hcvtransmission.hazard.t_max`` (200): |br|
+   As explained in the section about :ref:`'time limited' hazards <timelimited>`, an
+   exponential function needs some kind of threshold value (after which it stays
+   constant) to be able to perform the necessary calculations. This configuration
+   value is a measure of this threshold.
 
 

@@ -1,17 +1,18 @@
-#ifndef EVENTHIVTRANSMISSION_H
+#ifndef EVENTHCVTRANSMISSION_H
 
-#define EVENTHIVTRANSMISSION_H
+#define EVENTHCVTRANSMISSION_H
 
 #include "simpactevent.h"
+#include "hazardfunctionexp.h"
 
 class ConfigSettings;
 
-class EventHIVTransmission : public SimpactEvent
+class EventHCVTransmission : public SimpactEvent
 {
 public:
 	// Transmission from person1 onto person2
-	EventHIVTransmission(Person *pPerson1, Person *pPerson2);
-	~EventHIVTransmission();
+	EventHCVTransmission(Person *pPerson1, Person *pPerson2);
+	~EventHCVTransmission();
 
 	std::string getDescription(double tNow) const;
 	void writeLogs(const SimpactPopulation &pop, double tNow) const;
@@ -20,8 +21,6 @@ public:
 
 	static void processConfig(ConfigSettings &config, GslRandomNumberGenerator *pRndGen);
 	static void obtainConfig(ConfigWriter &config);
-	static double getParamB()																		{ return s_b; }
-	static double getParamC()																		{ return s_c; }
 
 	static void infectPerson(SimpactPopulation &population, Person *pOrigin, Person *pTarget, double t);
 protected:
@@ -29,24 +28,25 @@ protected:
 	double solveForRealTimeInterval(const State *pState, double Tdiff, double t0);
 	bool isUseless(const PopulationStateInterface &population) override;
 	double calculateHazardFactor(const SimpactPopulation &population, double t0);
+	class HazardFunctionHCVTransmission : public HazardFunctionExp
+	{
+	public:
+		HazardFunctionHCVTransmission(const Person *pPerson1, const Person *pPerson2);
+		~HazardFunctionHCVTransmission();
 
-	static double s_a;
-	static double s_b;
-	static double s_c;
-	static double s_d1;
-	static double s_d2;
+		static double getA(const Person *pPerson1, const Person *pPerson2);
+		static double s_b;
+	};
+	static double getTMax(const Person *pOrigin, const Person *pTarget);
+	static int getHi(const Person *pPerson1);
+	static int getHj(const Person *pPerson2);
+	static int getM(const Person *pPerson1);
+	static double s_tMax;
+	static double s_c1;
+	static double s_c2;
+	static double s_d;
 	static double s_e1;
 	static double s_e2;
-	static double s_e3;
-	static double s_f1;
-	static double s_f2;
-	static double s_g1;
-	static double s_g2;
-	static double s_g3;
-	static double s_tMaxAgeRefDiff;
-	static int getH(const Person *pPerson);
-	static int getHCV(const Person *pPerson);
 };
 
-#endif // EVENTHIVTRANSMISSION_H
-
+#endif // EVENTHCVTRANSMISSION_H

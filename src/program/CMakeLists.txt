@@ -6,6 +6,7 @@ set(SOURCES_SIMPACT
 	../program-common/person_relations.cpp
 	../program-common/person_hiv.cpp
 	../program-common/person_hsv2.cpp
+	../program-common/person_hcv.cpp
 	../program-common/logsystem.cpp
 	../program-common/simpactpopulation.cpp
 	../program-common/eventmortalitybase.cpp
@@ -16,10 +17,12 @@ set(SOURCES_SIMPACT
 	../program-common/eventdebut.cpp
 	../program-common/eventhivtransmission.cpp
 	../program-common/eventhsv2transmission.cpp
+	../program-common/eventhcvtransmission.cpp
 	../program-common/eventchronicstage.cpp
 	../program-common/eventseedbase.cpp
 	../program-common/eventhivseed.cpp
 	../program-common/eventhsv2seed.cpp
+	../program-common/eventhcvseed.cpp
 	../program-common/eventintervention.cpp
 	../program-common/eventaidsstage.cpp
 	../program-common/eventconception.cpp

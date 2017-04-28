@@ -15,7 +15,7 @@
 using namespace std;
 
 Person::Person(double dateOfBirth, Gender g) : PersonBase(g, dateOfBirth), m_relations(this), m_hiv(this),
-	                                           m_hsv2(this)
+	                                           m_hsv2(this), m_hcv(this)
 {
 	assert(g == Male || g == Female);
 
@@ -111,15 +111,19 @@ void Person::writeToPersonLog()
 	Person *pHSV2Origin = (m_hsv2.isInfected()) ? m_hsv2.getInfectionOrigin() : 0;
 	int hsv2origin = (pHSV2Origin != 0) ? (int)pHSV2Origin->getPersonID() : (-1); // TODO: cast should be ok
 
+	double hcvInfectionTime = (m_hcv.isInfected()) ? m_hcv.getInfectionTime() : infinity;
+	Person *pHCVOrigin = (m_hcv.isInfected()) ? m_hcv.getInfectionOrigin() : 0;
+	int hcvorigin = (pHCVOrigin != 0) ? (int)pHCVOrigin->getPersonID() : (-1);
+
 	double cd4AtInfection = (m_hiv.isInfected())?m_hiv.getCD4CountAtInfectionStart() : (-1);
 	double cd4AtDeath = (m_hiv.isInfected())?m_hiv.getCD4CountAtDeath() : (-1);
 
-	LogPerson.print("%d,%d,%10.10f,%10.10f,%d,%d,%10.10f,%10.10f,%10.10f,%10.10f,%d,%d,%10.10f,%10.10f,%10.10f,%10.10f,%d,%10.10f,%d,%10.10f,%10.10f",
+	LogPerson.print("%d,%d,%10.10f,%10.10f,%d,%d,%10.10f,%10.10f,%10.10f,%10.10f,%d,%d,%10.10f,%10.10f,%10.10f,%10.10f,%d,%10.10f,%d,%10.10f,%d,%10.10f,%10.10f",
 		        id, gender, timeOfBirth, timeOfDeath, fatherID, motherID, debutTime,
 		        formationEagerness,formationEagernessMSM,
 		        infectionTime, origin, infectionType, log10SPVLoriginal, treatmentTime,
 				m_location.x, m_location.y, aidsDeath,
-				hsv2InfectionTime, hsv2origin, cd4AtInfection, cd4AtDeath);
+				hsv2InfectionTime, hsv2origin, hcvInfectionTime, hcvorigin, cd4AtInfection, cd4AtDeath);
 }
 
 void Person::writeToLocationLog(double tNow)

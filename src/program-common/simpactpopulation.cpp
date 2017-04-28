@@ -6,6 +6,7 @@
 #include "eventchronicstage.h"
 #include "eventhivseed.h"
 #include "eventhsv2seed.h"
+#include "eventhcvseed.h"
 #include "eventintervention.h"
 #include "eventperiodiclogging.h"
 #include "eventsyncpopstats.h"
@@ -201,6 +202,12 @@ bool_t SimpactPopulation::scheduleInitialEvents()
 	if (EventHSV2Seed::getSeedTime() >= 0)
 	{
 		EventHSV2Seed *pEvt = new EventHSV2Seed(); // this is a global event
+		onNewEvent(pEvt);
+	}
+
+	if (EventHCVSeed::getSeedTime() >= 0)
+	{
+		EventHCVSeed *pEvt = new EventHCVSeed(); // this is a global event
 		onNewEvent(pEvt);
 	}
 

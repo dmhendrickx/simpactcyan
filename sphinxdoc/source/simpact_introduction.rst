@@ -4,7 +4,8 @@ Introduction
 Like other members of the Simpact family, Simpact Cyan is an 
 `agent based model (ABM) <http://en.wikipedia.org/wiki/Agent-based_model>`_ to 
 study the way an infection spreads and can be influenced, and is currently 
-focused on HIV. 
+focused on HIV, and co-infection with Herpes Simplex Virus-2 (HSV2) and
+Hepatitis C Virus (HCV).
 The program models each individual in a population of a specified
 initial size. Things that can happen are represented by *events*, which
 can have a certain risk of being executed at a certain moment. Time advances

@@ -7,6 +7,7 @@
 #include "person_relations.h"
 #include "person_hiv.h"
 #include "person_hsv2.h"
+#include "person_hcv.h"
 #include "probabilitydistribution2d.h"
 #include "util.h"
 #include <stdlib.h>
@@ -91,6 +92,10 @@ public:
 	Person_HSV2 &hsv2()																{ return m_hsv2; }
 	const Person_HSV2 &hsv2() const													{ return m_hsv2; }
 
+	// HCV stuff
+	Person_HCV &hcv()																{ return m_hcv; }
+	const Person_HCV &hcv() const													{ return m_hcv; }
+
 	// This is a per person value
 	double getSurvivalTimeLog10Offset() const										{ return m_hiv.getSurvivalTimeLog10Offset(); }
 
@@ -112,6 +117,7 @@ private:
 	Person_Relations m_relations;
 	Person_HIV m_hiv;
 	Person_HSV2 m_hsv2;
+	Person_HCV m_hcv;
 
 	Point2D m_location;
 	double m_locationTime;

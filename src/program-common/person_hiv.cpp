@@ -42,6 +42,7 @@ Person_HIV::Person_HIV(Person *pSelf) : m_pSelf(pSelf)
 	m_log10SurvTimeOffset = m_pLogSurvTimeOffsetDistribution->pickNumber();
 	m_hazardB0Param = m_pB0Dist->pickNumber();
 	m_hazardB1Param = m_pB1Dist->pickNumber();
+	m_hazardB3Param = m_pB3Dist->pickNumber();
 }
 
 Person_HIV::~Person_HIV()
@@ -243,6 +244,7 @@ ProbabilityDistribution *Person_HIV::m_pARTAcceptDistribution = 0;
 ProbabilityDistribution *Person_HIV::m_pLogSurvTimeOffsetDistribution = 0;
 ProbabilityDistribution *Person_HIV::m_pB0Dist = 0;
 ProbabilityDistribution *Person_HIV::m_pB1Dist = 0;
+ProbabilityDistribution *Person_HIV::m_pB3Dist = 0;
 
 void Person_HIV::processConfig(ConfigSettings &config, GslRandomNumberGenerator *pRndGen)
 {
@@ -326,8 +328,10 @@ void Person_HIV::processConfig(ConfigSettings &config, GslRandomNumberGenerator 
 
 	delete m_pB0Dist;
 	delete m_pB1Dist;
+	delete m_pB3Dist;
 	m_pB0Dist = getDistributionFromConfig(config, pRndGen, "person.hiv.b0");
 	m_pB1Dist = getDistributionFromConfig(config, pRndGen, "person.hiv.b1");
+	m_pB3Dist = getDistributionFromConfig(config, pRndGen, "person.hiv.b3");
 }
 
 void Person_HIV::obtainConfig(ConfigWriter &config)
@@ -346,6 +350,7 @@ void Person_HIV::obtainConfig(ConfigWriter &config)
 	addDistributionToConfig(m_pLogSurvTimeOffsetDistribution, config, "person.survtime.logoffset");
 	addDistributionToConfig(m_pB0Dist, config, "person.hiv.b0");
 	addDistributionToConfig(m_pB1Dist, config, "person.hiv.b1");
+	addDistributionToConfig(m_pB1Dist, config, "person.hiv.b3");
 
 	{
 		VspModelLogWeibullWithRandomNoise *pDist = 0;
@@ -396,14 +401,18 @@ JSONConfig personHIVJSONConfig(R"JSON(
 		"depends": null,
 		"params": [ 
 		    [ "person.hiv.b0.dist", "distTypes", [ "fixed", [ [ "value", 0 ]   ] ] ],
-		    [ "person.hiv.b1.dist", "distTypes", [ "fixed", [ [ "value", 0 ]   ] ] ]],
+			[ "person.hiv.b1.dist", "distTypes", [ "fixed", [ [ "value", 0 ]   ] ] ],
+		    [ "person.hiv.b3.dist", "distTypes", [ "fixed", [ [ "value", 0 ]   ] ] ]],
 	      	"info": [
 		    "The 'b0' parameter in the HIV transmission hazard is chosen from this",
 		    "distribution, allowing transmission to",
-		    "depend more on susceptibility for both infections",
+		    "depend more on susceptibility for HIV-HSV2 co-infection",
 		    "The 'b1' parameter in the HIV transmission hazard is chosen from this",
 		    "distribution, allowing transmission to",
-		    "depend more on susceptibility for HIV only."
+		    "depend more on susceptibility for HIV only",
+			"The 'b3' parameter in the HIV transmission hazard is chosen from this",
+		    "distribution, allowing transmission to",
+		    "depend more on susceptibility for HIV-HCV co-infection."
             ]
        },
         "PersonVspAcute": { 
